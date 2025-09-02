@@ -1,5 +1,6 @@
 package com.arthur.stocktracer.client;
 
+import com.arthur.stocktracer.dto.AlphaVantageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

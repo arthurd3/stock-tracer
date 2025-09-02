@@ -1,6 +1,7 @@
 package com.arthur.stocktracer.service;
 
 import com.arthur.stocktracer.client.StockClient;
+import com.arthur.stocktracer.dto.AlphaVantageResponse;
 import com.arthur.stocktracer.dto.StockResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,12 @@ public class StockService {
 
 
     public StockResponse getStockForSymbol(final String stockSymbol) {
-        stockClient.getStockQuote(stockSymbol);
+        final AlphaVantageResponse alphaResponse = stockClient.getStockQuote(stockSymbol);
 
-        return new StockResponse();
+        return StockResponse.builder()
+                .symbol(alphaResponse.globalQuote().symbol())
+                .price(Double.parseDouble(alphaResponse.globalQuote().price()))
+                .lastUpdate(alphaResponse.globalQuote().lastTradingDay())
+                .build();
     }
 }
