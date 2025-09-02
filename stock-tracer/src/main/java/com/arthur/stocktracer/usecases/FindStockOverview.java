@@ -1,6 +1,7 @@
 package com.arthur.stocktracer.usecases;
 
 import com.arthur.stocktracer.client.StockClient;
+import com.arthur.stocktracer.dto.StockOverviewResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,8 +13,7 @@ public class FindStockOverview {
         this.stockClient = stockClient;
     }
 
-
-    public StockOverviewResponse getStockOverviewForSymbol(final String symbol){
-        return stockClient.getStockOverview(symbol);
+    public StockOverviewResponse getStockOverviewForSymbol(final String stockSymbol){
+        return stockClient.getStockOverview(stockSymbol);
     }
 }

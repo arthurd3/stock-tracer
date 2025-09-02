@@ -1,13 +1,15 @@
 package com.arthur.stocktracer.controller;
 
+import com.arthur.stocktracer.dto.DailyStockResponse;
+import com.arthur.stocktracer.dto.StockOverviewResponse;
 import com.arthur.stocktracer.dto.StockResponse;
 import com.arthur.stocktracer.usecases.FindStock;
+import com.arthur.stocktracer.usecases.FindStockHistory;
 import com.arthur.stocktracer.usecases.FindStockOverview;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stocks")
@@ -15,11 +17,13 @@ public class StockController {
 
     private final FindStock findStock;
     private final FindStockOverview findStockOverview;
+    private final FindStockHistory findStockHistory;
 
     @Autowired
-    public StockController(final FindStock findStock, final FindStockOverview findStockOverview) {
+    public StockController(final FindStock findStock, final FindStockOverview findStockOverview, FindStockHistory findStockHistory) {
         this.findStock = findStock;
         this.findStockOverview = findStockOverview;
+        this.findStockHistory = findStockHistory;
     }
 
     @GetMapping("/{stockSymbol}")
@@ -31,5 +35,15 @@ public class StockController {
     public StockOverviewResponse getStockOverview(@PathVariable String stockSymbol){
         return findStockOverview.getStockOverviewForSymbol(stockSymbol.toUpperCase());
     }
+
+    @GetMapping("/{stockSymbol}/history")
+    public List<DailyStockResponse> getStockHistory(
+            @PathVariable String stockSymbol,
+            @RequestParam(defaultValue = "30") int days
+    ){
+        return findStockHistory.getHistory(stockSymbol.toUpperCase() , days);
+    }
+
+
 
 }
