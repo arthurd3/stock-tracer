@@ -5,10 +5,7 @@ import com.arthur.stocktracer.dto.FavoriteStockRequest;
 import com.arthur.stocktracer.dto.StockOverviewResponse;
 import com.arthur.stocktracer.dto.StockResponse;
 import com.arthur.stocktracer.entity.FavoriteStock;
-import com.arthur.stocktracer.usecases.AddFavoriteStock;
-import com.arthur.stocktracer.usecases.FindStock;
-import com.arthur.stocktracer.usecases.FindStockHistory;
-import com.arthur.stocktracer.usecases.FindStockOverview;
+import com.arthur.stocktracer.usecases.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +20,17 @@ public class StockController {
     private final FindStockOverview findStockOverview;
     private final FindStockHistory findStockHistory;
     private final AddFavoriteStock addFavoriteStock;
+    private final FindFavorites findFavorites;
 
     @Autowired
-    public StockController(final FindStock findStock, final FindStockOverview findStockOverview, FindStockHistory findStockHistory, AddFavoriteStock addFavoriteStock) {
+    public StockController(final FindStock findStock, final FindStockOverview findStockOverview,
+                           final FindStockHistory findStockHistory, final AddFavoriteStock addFavoriteStock,
+                           final  FindFavorites findFavorites) {
         this.findStock = findStock;
         this.findStockOverview = findStockOverview;
         this.findStockHistory = findStockHistory;
         this.addFavoriteStock = addFavoriteStock;
+        this.findFavorites = findFavorites;
     }
 
     @GetMapping("/{stockSymbol}")
@@ -54,6 +55,11 @@ public class StockController {
     public ResponseEntity<FavoriteStock> saveFavoriteStock(@RequestBody FavoriteStockRequest favoriteStock){
         final FavoriteStock saved = addFavoriteStock.addFavorite(favoriteStock.getSymbol());
         return ResponseEntity.ok(saved);
+    }
+
+    @GetMapping("/favorites")
+    public List<StockResponse> getFavoriteStocks(){
+        return findFavorites.getFavorites();
     }
 
 
