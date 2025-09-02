@@ -4,6 +4,7 @@ import com.arthur.stocktracer.client.StockClient;
 import com.arthur.stocktracer.dto.AlphaVantageResponse;
 import com.arthur.stocktracer.dto.StockResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,7 @@ public class FindStock {
         this.stockClient = stockClient;
     }
 
+    @Cacheable(value = "stocks" , key = "#stockSymbol")
     public StockResponse getStockForSymbol(final String stockSymbol) {
         final AlphaVantageResponse alphaResponse = stockClient.getStockQuote(stockSymbol);
 
