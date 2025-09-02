@@ -1,4 +1,4 @@
-package com.arthur.stocktracer.service;
+package com.arthur.stocktracer.usecases;
 
 import com.arthur.stocktracer.client.StockClient;
 import com.arthur.stocktracer.dto.AlphaVantageResponse;
@@ -7,15 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StockService {
+public class FindStock {
 
     private final StockClient stockClient;
 
     @Autowired
-    public StockService(final StockClient stockClient) {
+    public FindStock(final StockClient stockClient) {
         this.stockClient = stockClient;
     }
-
 
     public StockResponse getStockForSymbol(final String stockSymbol) {
         final AlphaVantageResponse alphaResponse = stockClient.getStockQuote(stockSymbol);
