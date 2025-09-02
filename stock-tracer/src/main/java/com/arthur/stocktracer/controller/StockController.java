@@ -4,6 +4,7 @@ import com.arthur.stocktracer.dto.DailyStockResponse;
 import com.arthur.stocktracer.dto.FavoriteStockRequest;
 import com.arthur.stocktracer.dto.StockOverviewResponse;
 import com.arthur.stocktracer.dto.StockResponse;
+import com.arthur.stocktracer.entity.FavoriteStock;
 import com.arthur.stocktracer.usecases.AddFavoriteStock;
 import com.arthur.stocktracer.usecases.FindStock;
 import com.arthur.stocktracer.usecases.FindStockHistory;
@@ -51,7 +52,7 @@ public class StockController {
 
     @PostMapping("/favorites")
     public ResponseEntity<FavoriteStock> saveFavoriteStock(@RequestBody FavoriteStockRequest favoriteStock){
-        final FavoriteStock saved = addFavoriteStock.addFavorite(request.getSymbol());
+        final FavoriteStock saved = addFavoriteStock.addFavorite(favoriteStock.getSymbol());
         return ResponseEntity.ok(saved);
     }
 
